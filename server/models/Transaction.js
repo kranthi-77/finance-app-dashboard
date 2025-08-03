@@ -1,8 +1,9 @@
 import mongoose from "mongoose";
-import { loadType } from "mongoose-currency";
 
 const Schema = mongoose.Schema;
-loadType(mongoose);
+
+// Helper function to convert Decimal128 to float for JSON responses
+const decimalGetter = (v) => (v ? parseFloat(v.toString()) : v);
 
 const TransactionSchema = new Schema(
   {
@@ -11,9 +12,8 @@ const TransactionSchema = new Schema(
       required: true,
     },
     amount: {
-      type: mongoose.Types.Currency,
-      currency: "USD",
-      get: (v) => v / 100,
+      type: mongoose.Schema.Types.Decimal128,
+      get: decimalGetter,
     },
     productIds: [
       {

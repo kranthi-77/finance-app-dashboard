@@ -1,21 +1,20 @@
 import mongoose from "mongoose";
-import { loadType } from "mongoose-currency";
 
 const Schema = mongoose.Schema;
-loadType(mongoose);
+
+// Helper to convert Decimal128 to float (for getters)
+const decimalGetter = (v) => (v ? parseFloat(v.toString()) : v);
 
 const daySchema = new Schema(
   {
     date: String,
     revenue: {
-      type: mongoose.Types.Currency,
-      currency: "USD",
-      get: (v) => v / 100,
+      type: mongoose.Schema.Types.Decimal128,
+      get: decimalGetter,
     },
     expenses: {
-      type: mongoose.Types.Currency,
-      currency: "USD",
-      get: (v) => v / 100,
+      type: mongoose.Schema.Types.Decimal128,
+      get: decimalGetter,
     },
   },
   { toJSON: { getters: true } }
@@ -25,24 +24,20 @@ const monthSchema = new Schema(
   {
     month: String,
     revenue: {
-      type: mongoose.Types.Currency,
-      currency: "USD",
-      get: (v) => v / 100,
+      type: mongoose.Schema.Types.Decimal128,
+      get: decimalGetter,
     },
     expenses: {
-      type: mongoose.Types.Currency,
-      currency: "USD",
-      get: (v) => v / 100,
+      type: mongoose.Schema.Types.Decimal128,
+      get: decimalGetter,
     },
     operationalExpenses: {
-      type: mongoose.Types.Currency,
-      currency: "USD",
-      get: (v) => v / 100,
+      type: mongoose.Schema.Types.Decimal128,
+      get: decimalGetter,
     },
     nonOperationalExpenses: {
-      type: mongoose.Types.Currency,
-      currency: "USD",
-      get: (v) => v / 100,
+      type: mongoose.Schema.Types.Decimal128,
+      get: decimalGetter,
     },
   },
   { toJSON: { getters: true } }
@@ -51,26 +46,22 @@ const monthSchema = new Schema(
 const KPISchema = new Schema(
   {
     totalProfit: {
-      type: mongoose.Types.Currency,
-      currency: "USD",
-      get: (v) => v / 100,
+      type: mongoose.Schema.Types.Decimal128,
+      get: decimalGetter,
     },
     totalRevenue: {
-      type: mongoose.Types.Currency,
-      currency: "USD",
-      get: (v) => v / 100,
+      type: mongoose.Schema.Types.Decimal128,
+      get: decimalGetter,
     },
     totalExpenses: {
-      type: mongoose.Types.Currency,
-      currency: "USD",
-      get: (v) => v / 100,
+      type: mongoose.Schema.Types.Decimal128,
+      get: decimalGetter,
     },
     expensesByCategory: {
       type: Map,
       of: {
-        type: mongoose.Types.Currency,
-        currency: "USD",
-        get: (v) => v / 100,
+        type: mongoose.Schema.Types.Decimal128,
+        get: decimalGetter,
       },
     },
     monthlyData: [monthSchema],
